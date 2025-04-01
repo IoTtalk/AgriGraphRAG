@@ -10,6 +10,8 @@ chunk_size = 200
 # Embedding model
 # The embedding model repo from HuggingFace or model path from local.
 embedding_model_path = 'dunzhang/stella_en_1.5B_v5'
+# Use local finetuned model or not.
+use_finetuned_model = False
 
 # Directory name and file name of query file.
 query_directory = "questions/"
