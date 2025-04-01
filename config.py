@@ -15,12 +15,8 @@ embedding_model_path = 'dunzhang/stella_en_1.5B_v5'
 query_directory = "questions/"
 query_file = "queries_1000.txt"
 
-# Directory/File name of non-formal content.
-reference_directory = "purify/reference_paper/"
-keywords_file = "purify/keywords.txt"
-
 # Directory name of both retrieved results file and generated answers file.
-output_directory = "results/97/"
+output_directory = "results/0219/"
 
 # File name of retrieved results file.
 result_file = "graphRAG_Llama3.2-3B_1000Q_k10_Rtv.json"
