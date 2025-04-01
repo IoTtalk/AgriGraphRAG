@@ -29,5 +29,9 @@ NEO4J_URI = "bolt://localhost:8687"
 NEO4J_USER = "AgriGraph"
 NEO4J_PASSWORD = "Pcs54784"
 
+# LLM model
+# The LLM model repo from HuggingFace or model path from local.
+llm_model_path = "meta-llama/Llama-3.2-3B-Instruct"
+
 # File name of generated answers file.
 answer_file = "graphRAG_Llama3.2-3B_1000Q_k10.json"

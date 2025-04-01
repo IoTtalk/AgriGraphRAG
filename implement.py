@@ -234,6 +234,8 @@ if __name__ == "__main__":
     # =====Setting Here=====
     # File name of generated answers file.
     answer_file = config.answer_file
+    # LLM model path.
+    llm_model_path = config.llm_model_path
     
     # Generate answer and write into answer file for each retrieved result.
     with open(output_dir + answer_file, "w") as output_file:
@@ -251,7 +253,7 @@ if __name__ == "__main__":
             prompt += "\n\nGenerate a answer for me."
 
             # Call generating function to get generated answer.
-            generation = generate_with_loop(prompt, histories)
+            generation = generate_with_loop(llm_model_path, prompt, histories)
 
             answer = ""
             
