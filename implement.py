@@ -136,7 +136,7 @@ def hybrid_retrieve(user_query, num, use_finetuned, embedding_model, database_pa
         )
     
     # FAISS search
-    faiss_db = FAISS.load_local(database_path, embeddings_model)
+    faiss_db = FAISS.load_local(database_path, embeddings_model, allow_dangerous_deserialization=True)
     faiss_results = faiss_db.similarity_search(user_query, k=k)
     
     faiss_results = [result.page_content for result in faiss_results]
