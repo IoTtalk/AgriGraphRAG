@@ -149,7 +149,7 @@ def hybrid_retrieve(user_query, num, use_finetuned, embedding_model, database_pa
                 WHERE d.text CONTAINS $query
                 RETURN related.text, related.id
                 LIMIT $k
-            """, query=user_query, k=k)
+            """, query=user_query, k=k).data()
     
     graph_results = [result["d.text"] for result in graph_results]
 
