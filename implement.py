@@ -146,10 +146,10 @@ def hybrid_retrieve(user_query, num, use_finetuned, embedding_model, database_pa
         with driver.session() as session:
             graph_results = session.run("""
                 MATCH (d:Document)-[:CITES|SIMILAR_TO]->(related)
-                WHERE d.text CONTAINS $query
+                WHERE d.text CONTAINS $search_query
                 RETURN related.text, related.id
                 LIMIT $k
-            """, query=user_query, k=k).data()
+            """, search_query=user_query, k=k).data()
     
     graph_results = [result["d.text"] for result in graph_results]
 
