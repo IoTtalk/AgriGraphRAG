@@ -52,7 +52,7 @@ class MyEmbedding:
 
 def create_graph(tx, chunk):
     tx.run(
-        "MERGE (d:Document {id: $id, text: %text})",
+        "MERGE (d:Document {id: $id, text: $text})",
         id = chunk.metadata["id"],
         text = chunk.page_content,
     )
