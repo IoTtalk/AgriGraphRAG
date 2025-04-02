@@ -1,0 +1,9 @@
+# Retriever
+langchain
+langchain-community
+sentence-transformers
+chromadb
+faiss
+torch
+numpy
+SentencePiece
