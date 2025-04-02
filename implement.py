@@ -148,8 +148,8 @@ def hybrid_retrieve(user_query, num, use_finetuned, embedding_model, database_pa
                 MATCH (d:Document)-[:CITES|SIMILAR_TO]->(related)
                 WHERE d.text CONTAINS $query
                 RETURN related.text, related.id
-                LIMIT {}
-            """.format(k), query=user_query)
+                LIMIT $k
+            """, query=user_query, k=k)
     
     graph_results = [result["d.text"] for result in graph_results]
 
