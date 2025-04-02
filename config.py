@@ -28,7 +28,7 @@ top_k = 10
 
 # Configuration of Neo4j server
 NEO4J_URI = "bolt://localhost:8687"
-NEO4J_USER = "AgriGraph"
+NEO4J_USER = "neo4j"
 NEO4J_PASSWORD = "Pcs54784"
 
 # LLM model
