@@ -145,8 +145,7 @@ def hybrid_retrieve(user_query, num, use_finetuned, embedding_model, database_pa
     with GraphDatabase.driver(neo4j_uri, auth=(neo4j_user, neo4j_passwd)) as driver:
         with driver.session() as session:
             graph_results = session.run(
-                "MATCH (d:Document) WHERE d.text CONTAINS $query RETURN d.text LIMIT {}".format(k),
-                query=user_query,
+                "MATCH (d:Document) WHERE d.text CONTAINS {} RETURN d.text LIMIT {}".format(user_query, k),
             )
     
     graph_results = [result["d.text"] for result in graph_results]
