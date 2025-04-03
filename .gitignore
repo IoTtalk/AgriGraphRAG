@@ -1,2 +1,5 @@
 # FAISS vector database
 faiss_index
+
+# Jupyter Notebook
+.ipynb*
