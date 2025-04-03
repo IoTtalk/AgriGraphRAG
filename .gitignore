@@ -2,4 +2,4 @@
 faiss_index
 
 # Jupyter Notebook
-.ipynb*
+.ipynb_checkpoints
