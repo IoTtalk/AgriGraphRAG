@@ -8,7 +8,7 @@ import json
 # Import langchain frameware to build knowledge graph for GraphRAG.
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.vectorstores import FAISS
+from langchain_community.vectorstores import Chroma, FAISS
 from neo4j import GraphDatabase
 
 # Import transformer to load finetuned embedding model from local.
@@ -98,9 +98,17 @@ def set_graph(file_name, chunk_size, use_finetuned, embedding_model, database_pa
             encode_kwargs = {'normalize_embeddings': False}
         )
     
+    # Store chunks in Chroma
+    chromadb = Chroma.from_documents(chunks, 
+                                     embedding=embeddings_model,
+                                     collection_name='coll_cosine',
+                                     collection_metadata={"hnsw:space": "cosine"},
+                                     persist_directory=database_path)
+    chromadb.persist()
+    
     # Store chunks in FAISS
-    faiss_db = FAISS.from_documents(chunks, embeddings_model)
-    faiss_db.save_local(database_path)
+    # faiss_db = FAISS.from_documents(chunks, embeddings_model)
+    # faiss_db.save_local(database_path)
     
     with GraphDatabase.driver(neo4j_uri, auth=(neo4j_user, neo4j_passwd)) as driver:
         with driver.session() as session:
@@ -135,11 +143,18 @@ def hybrid_retrieve(user_query, num, use_finetuned, embedding_model, database_pa
             encode_kwargs = {'normalize_embeddings': False}
         )
     
-    # FAISS search
-    faiss_db = FAISS.load_local(database_path, embeddings_model, allow_dangerous_deserialization=True)
-    faiss_results = faiss_db.similarity_search(user_query, k=k)
+    # Chroma search
+    chromadb = Chroma(embedding_function=embeddings_model,
+                      collection_name='coll_cosine',
+                      collection_metadata={"hnsw:space": "cosine"},
+                      persist_directory=database_path)
+    chroma_results = chromadb.similarity_search_with_score(user_query, k)
+    chroma_results = [result[0].page_content for result in chroma_results]
     
-    faiss_results = [result.page_content for result in faiss_results]
+    # FAISS search
+    # faiss_db = FAISS.load_local(database_path, embeddings_model, allow_dangerous_deserialization=True)
+    # faiss_results = faiss_db.similarity_search(user_query, k=k)
+    # faiss_results = [result.page_content for result in faiss_results]
     
     # Graph search
     with GraphDatabase.driver(neo4j_uri, auth=(neo4j_user, neo4j_passwd)) as driver:
