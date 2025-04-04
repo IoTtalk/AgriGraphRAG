@@ -9,6 +9,9 @@ import json
 from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma, FAISS
+
+# Graph RAG
+from sentence_transformers import util
 from neo4j import GraphDatabase
 
 # Import transformer to load finetuned embedding model from local.
@@ -50,12 +53,21 @@ class MyEmbedding:
         return embedding
 
 
-def create_graph(tx, chunk):
+def create_graph(tx, id, text):
     tx.run(
         "MERGE (d:Document {id: $id, text: $text})",
-        id = chunk.metadata["id"],
-        text = chunk.page_content,
+        id = id,
+        text = text,
     )
+
+
+threshold = 0.8
+# Create relationships in Neo4j
+def create_relationship(tx, text1, text2, score):
+    tx.run("""
+        MATCH (d1:Document {text: $text1}), (d2:Document {text: $text2})
+        MERGE (d1)-[:SIMILAR_TO {score: $score}]->(d2)
+    """, doc1=text1, doc2=text2, score=float(score))
 
 
 def set_graph(file_name, chunk_size, use_finetuned, embedding_model, database_path):
@@ -110,10 +122,18 @@ def set_graph(file_name, chunk_size, use_finetuned, embedding_model, database_pa
     # faiss_db = FAISS.from_documents(chunks, embeddings_model)
     # faiss_db.save_local(database_path)
     
+    # Compute embeddings
+    text_embeddings = embeddings_model.encode(texts, convert_to_tensor=True)
+    # Compute similarity scores (Cosine similarity metrix)
+    similarities = util.pytorch_cos_sim(text_embeddings, text_embeddings)
+    
     with GraphDatabase.driver(neo4j_uri, auth=(neo4j_user, neo4j_passwd)) as driver:
         with driver.session() as session:
-            for chunk in chunks:
-                session.execute_write(create_graph, chunk)
+            for i, text in enumerate(texts):
+                session.execute_write(create_graph, i, text)
+                for j in range(i+1, len(texts)):
+                    if similarities[i][j] > threshold:
+                        session.write_transaction(create_relationship, text, texts[j], similarities[i][j].item())
     
     return len(chunks)
 

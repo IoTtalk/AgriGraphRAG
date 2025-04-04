@@ -1,7 +1,6 @@
 # Retriever
 langchain
 langchain-community
-sentence-transformers
 chromadb
 faiss-cpu
 torch
@@ -9,4 +8,5 @@ numpy
 SentencePiece
 
 # Graph
+sentence-transformers
 neo4j
