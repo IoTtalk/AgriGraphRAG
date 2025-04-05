@@ -4,8 +4,3 @@ chroma_*
 # FAISS vector database
 faiss_index
 
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# Python cache
-__pycahce__
