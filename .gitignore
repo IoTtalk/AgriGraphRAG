@@ -5,7 +5,7 @@ chroma_*
 faiss_index
 
 # Jupyter Notebook
-.ipynb_checkpoints
+.ipynb_checkpoints/*
 
 # Python cache
-__pycahce__
+__pycahce__/*
