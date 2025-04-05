@@ -1,3 +1,6 @@
+# Chroma vector database
+chroma_*
+
 # FAISS vector database
 faiss_index
 

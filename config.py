@@ -1,5 +1,5 @@
 # The path of vector DB.
-database_path = "faiss_index"
+database_path = "chroma_0219"
 
 # The path of enterprise data.
 file_name = 'enterprises/chunks_20250219_cleaned.json'
