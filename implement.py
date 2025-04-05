@@ -67,7 +67,7 @@ def create_relationship(tx, text1, text2):
     tx.run("""
         MATCH (d1:Document {text: $text1}), (d2:Document {text: $text2})
         MERGE (d1)-[:SIMILAR_TO]->(d2)
-    """, doc1=text1, doc2=text2)
+    """, text1=text1, text2=text2)
 
 
 def set_graph(file_name, chunk_size, use_finetuned, embedding_model, database_path):
