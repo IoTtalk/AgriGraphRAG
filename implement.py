@@ -123,7 +123,7 @@ def set_graph(file_name, chunk_size, use_finetuned, embedding_model, database_pa
     # faiss_db.save_local(database_path)
     
     # Compute embeddings
-    text_embeddings = embeddings_model.encode(texts, convert_to_tensor=True)
+    text_embeddings = embeddings_model.embed_documents(texts)
     # Compute similarity scores (Cosine similarity metrix)
     similarities = util.pytorch_cos_sim(text_embeddings, text_embeddings)
     
