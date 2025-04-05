@@ -63,11 +63,11 @@ def create_graph(tx, id, text):
 
 threshold = 0.8
 # Create relationships in Neo4j
-def create_relationship(tx, text1, text2, score):
+def create_relationship(tx, text1, text2):
     tx.run("""
         MATCH (d1:Document {text: $text1}), (d2:Document {text: $text2})
-        MERGE (d1)-[:SIMILAR_TO {score: $score}]->(d2)
-    """, doc1=text1, doc2=text2, score=float(score))
+        MERGE (d1)-[:SIMILAR_TO]->(d2)
+    """, doc1=text1, doc2=text2)
 
 
 def set_graph(file_name, chunk_size, use_finetuned, embedding_model, database_path):
@@ -133,7 +133,7 @@ def set_graph(file_name, chunk_size, use_finetuned, embedding_model, database_pa
                 session.execute_write(create_graph, i, text)
                 for j in range(i+1, len(texts)):
                     if similarities[i][j] > threshold:
-                        session.write_transaction(create_relationship, text, texts[j], similarities[i][j].item())
+                        session.write_transaction(create_relationship, text, texts[j])
     
     return len(chunks)
 
@@ -180,7 +180,7 @@ def hybrid_retrieve(user_query, num, use_finetuned, embedding_model, database_pa
     with GraphDatabase.driver(neo4j_uri, auth=(neo4j_user, neo4j_passwd)) as driver:
         with driver.session() as session:
             graph_results = session.run("""
-                MATCH (d:Document)-[:CITES|SIMILAR_TO]->(related)
+                MATCH (d:Document)-[:SIMILAR_TO]->(related)
                 WHERE d.text CONTAINS $search_query
                 RETURN related.text, related.id
                 LIMIT $k
