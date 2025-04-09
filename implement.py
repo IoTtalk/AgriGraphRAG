@@ -285,7 +285,7 @@ if __name__ == "__main__":
             prompt = f"Question: {query}\n\nRelated documents: "
             
             for j in range(top_k):
-                prompt += ("\n" + f"{j}. " + retrieved_result)
+                prompt += ("\n" + f"{j}. " + retrieved_result[j])
             
             prompt += "\n\nGenerate a answer for me."
 
