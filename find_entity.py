@@ -3,18 +3,18 @@ import json
 import requests
 import config
 
-def query_ollama(prompt, model='DeepSeek-R1-Distill-Llama-70B'):
+def query_ollama(prompt, model='deepseek-r1:70b'):
     url = 'http://140.113.164.115:32179/api/generate'
     headers = {'Content-Type': 'application/json'}
     payload = {
         'model': model,
         'prompt': prompt,
-        'stream': False  # set to True if you want to handle streamed responses
+        'stream': False,  # set to True if you want to handle streamed responses
+        "keep_alive": -1
     }
 
     try:
         response = requests.post(url, json=payload, headers=headers)
-        response.raise_for_status()
         data = response.json()
         return data.get('response')
     except requests.exceptions.RequestException as e:
