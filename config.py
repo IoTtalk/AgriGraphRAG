@@ -17,6 +17,12 @@ use_finetuned_model = False
 query_directory = "questions/"
 query_file = "queries_1000.txt"
 
+# Directory name of temp file while generating graph.
+temp_directory = "temp/"
+
+# File name of entity results file.
+entity_file = "entity.json"
+
 # Directory name of both retrieved results file and generated answers file.
 output_directory = "results/0219/"
 
