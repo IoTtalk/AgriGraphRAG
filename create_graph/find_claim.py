@@ -1,6 +1,9 @@
 import os
 import json
 import requests
+
+import sys
+sys.path.append("..")
 import config
 
 def query_ollama(prompt, model='deepseek-r1:70b'):
