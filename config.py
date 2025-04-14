@@ -23,6 +23,9 @@ temp_directory = "temp/"
 # File name of entity results file.
 entity_file = "entity.json"
 
+# File name of claim results file.
+claim_file = "claim.json"
+
 # Directory name of both retrieved results file and generated answers file.
 output_directory = "results/0219/"
 
