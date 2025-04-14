@@ -36,8 +36,23 @@ if __name__ == '__main__':
     
     claim_file = config.claim_file
     
+    except_ids = []
+    
     for item in text_and_entities:
-        entities = item["entity_result"].split("```")[1].split("json")[1]
+        entities = item["entity_result"]
+        
+        if "```" not in entities:
+            except_ids.append(item["qid"])
+            print(item["qid"])
+            continue
+        
+        entities = entities.split("```")[1]
+        
+        if "json" not in entities:
+            except_ids.append(item["qid"])
+            continue
+        
+        entities = entities.split("json")[1]
         
         prompt_text = "A claim is a specific, factual, or inferential statement made about an entity, usually describing: what it does, what role it plays, how it interacts with other entities, or what properties or effects it has.\n"
         prompt_text += "I'm going to give you a text paragraph and a list including all the entities of this paragraph with there type.  Please find all the claims against those given entities and return all the entities and their claims in the json format.\n\n"
@@ -56,3 +71,6 @@ if __name__ == '__main__':
     with open(temp_dir + claim_file, "w") as output_file:
         json.dump(claim_results, output_file, indent=4)
         output_file.close()
+        
+    print(len(except_ids))
+    print(except_ids)
