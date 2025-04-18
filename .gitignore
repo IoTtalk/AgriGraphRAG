@@ -6,6 +6,8 @@ faiss_index
 
 # Jupyter Notebook
 .ipynb_checkpoints/*
+create_graph/temp/.ipynb_checkpoints/*
+results/*/.ipynb_checkpoints/*
 
 # Python cache
-__pycahce__/*
+__pycache__/*
