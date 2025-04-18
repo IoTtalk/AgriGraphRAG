@@ -26,6 +26,9 @@ entity_file = "entity.json"
 # File name of claim results file.
 claim_file = "claim.json"
 
+# File name of relationship results file.
+relationship_file = "relationship.json"
+
 # Directory name of both retrieved results file and generated answers file.
 output_directory = "results/0219/"
 
